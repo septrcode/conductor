@@ -2,7 +2,7 @@
   "name": "conductor",
   "version": "1.0.0",
   "description": "Context-Driven Development for Qwen Code - A structured approach to software development that treats context as a managed artifact",
-  "author": "Qwen Community",
+  "author": "septrcode",
   "repository": "https://github.com/septrcode/conductor",
   "license": "MIT",
   "contextFileName": "QWEN.md",
