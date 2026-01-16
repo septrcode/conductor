@@ -1,39 +1,54 @@
-# Conductor Agent Context
+# Conductor Context for Qwen
 
-You are a Context-Driven Development Conductor, an expert in structured software development methodologies. Your role is to guide users through the Conductor process, which emphasizes establishing clear context before implementation.
+If a user mentions a "plan" or asks about the plan, and they have used the conductor extension in the current session, they are likely referring to the `conductor/tracks.md` file or one of the track plans (`conductor/tracks/<track_id>/plan.md`).
 
-## Core Principles
+## Universal File Resolution Protocol
 
-1. **Context First**: Always establish project context before implementation
-2. **Structured Approach**: Follow the three-phase process: Context → Specification/Planning → Implementation
-3. **Documentation**: Maintain comprehensive documentation at each stage
-4. **Alignment**: Ensure all work aligns with project goals, guidelines, and constraints
-5. **Traceability**: Maintain clear connections between requirements, plans, and implementation
+**PROTOCOL: How to locate files.**
+To find a file (e.g., "**Product Definition**") within a specific context (Project Root or a specific Track):
 
-## Capabilities
+1.  **Identify Index:** Determine the relevant index file:
+    -   **Project Context:** `conductor/index.md`
+    -   **Track Context:**
+        a. Resolve and read the **Tracks Registry** (via Project Context).
+        b. Find the entry for the specific `<track_id>`.
+        c. Follow the link provided in the registry to locate the track's folder. The index file is `<track_folder>/index.md`.
+        d. **Fallback:** If the track is not yet registered (e.g., during creation) or the link is broken:
+            1. Resolve the **Tracks Directory** (via Project Context).
+            2. The index file is `<Tracks Directory>/<track_id>/index.md`.
 
-- Initialize project context with `/conductor:setup`
-- Create tracks for high-level work units with `/conductor:newTrack`
-- Guide implementation following established plans with `/conductor:implement`
-- Provide status updates on project progress with `/conductor:status`
-- Revert changes for logical work units with `/conductor:revert`
+2.  **Check Index:** Read the index file and look for a link with a matching or semantically similar label.
 
-## Working Style
+3.  **Resolve Path:** If a link is found, resolve its path **relative to the directory containing the `index.md` file**.
+    -   *Example:* If `conductor/index.md` links to `./workflow.md`, the full path is `conductor/workflow.md`.
 
-- Ask clarifying questions when needed to properly customize project context
-- Reference existing project context documents to maintain consistency
-- Encourage detailed planning before implementation
-- Suggest best practices based on project guidelines
-- Maintain awareness of dependencies and constraints
+4.  **Fallback:** If the index file is missing or the link is absent, use the **Default Path** keys below.
 
-## Context Awareness
+5.  **Verify:** You MUST verify the resolved file actually exists on the disk.
 
-You have access to project context stored in the `conductor/` directory:
-- Product definition in `conductor/product.md`
-- Development guidelines in `conductor/guidelines.md`
-- Technology stack in `conductor/techstack.md`
-- Workflow processes in `conductor/workflow.md`
-- Code style guides in `conductor/codestyle.md`
-- Track-specific information in `conductor/tracks/[track-name]/`
+**Standard Default Paths (Project):**
+- **Product Definition**: `conductor/product.md`
+- **Tech Stack**: `conductor/tech-stack.md`
+- **Workflow**: `conductor/workflow.md`
+- **Product Guidelines**: `conductor/product-guidelines.md`
+- **Tracks Registry**: `conductor/tracks.md`
+- **Tracks Directory**: `conductor/tracks/`
 
-Always consider this context when providing guidance or making suggestions.
+**Standard Default Paths (Track):**
+- **Specification**: `conductor/tracks/<track_id>/spec.md`
+- **Implementation Plan**: `conductor/tracks/<track_id>/plan.md`
+- **Metadata**: `conductor/tracks/<track_id>/metadata.json`
+
+## Multi-Session/Track Coordination
+
+When multiple sessions or tracks are active:
+
+1.  **Track Isolation:** Each track operates independently with its own `spec.md` and `plan.md` files in its designated directory.
+
+2.  **State Management:** Track states are maintained separately in their respective `metadata.json` files.
+
+3.  **Conflict Prevention:** When working on different tracks simultaneously, ensure each session operates on distinct track directories to prevent file conflicts.
+
+4.  **Progress Tracking:** Each track's progress is recorded independently in its plan file and the global `tracks.md` registry.
+
+5.  **Resource Coordination:** When multiple tracks may affect shared resources, coordinate through the project's workflow and tech-stack guidelines to maintain consistency.

@@ -8,27 +8,27 @@
   "commands": [
     {
       "name": "setup",
-      "description": "Initialize project context with foundational documents",
+      "description": "Scaffold the project and set up the Conductor environment",
       "file": "./commands/conductor/setup.toml"
     },
     {
       "name": "newTrack",
-      "description": "Create a new track (high-level unit of work) with specification and plan",
+      "description": "Start a new feature or bug track",
       "file": "./commands/conductor/newTrack.toml"
     },
     {
       "name": "implement",
-      "description": "Execute planned tasks following defined workflows",
+      "description": "Execute the tasks defined in the current track's plan",
       "file": "./commands/conductor/implement.toml"
     },
     {
       "name": "status",
-      "description": "Get status overview of current tracks and progress",
+      "description": "Display the current progress of the tracks file and active tracks",
       "file": "./commands/conductor/status.toml"
     },
     {
       "name": "revert",
-      "description": "Revert changes for a logical work unit",
+      "description": "Revert a track, phase, or task by analyzing git history",
       "file": "./commands/conductor/revert.toml"
     }
   ]
