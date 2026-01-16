@@ -1,0 +1,76 @@
+name = "revert"
+description = "Revert changes for a logical work unit"
+
+[prompts.revert]
+text = '''
+As a Context-Driven Development Conductor, I need to revert changes associated with a specific track. 
+
+Please specify which track you want to revert by providing the track name. I will:
+1. Review the changes made during the implementation of this track
+2. Identify the git commits or file changes associated with this track
+3. Guide you through the process of reverting these changes safely
+4. Update the track's metadata to reflect the reverted status
+
+This ensures that we maintain clean git history and can backtrack on logical work units when needed.
+'''
+
+[actions.revert]
+command = "shell"
+script = '''
+TRACK_NAME="$1"
+
+if [ -z "$TRACK_NAME" ]; then
+  echo "Usage: /conductor:revert <track-name>"
+  echo "Available tracks:"
+  ls conductor/tracks/ 2>/dev/null || echo "No tracks found"
+  exit 1
+fi
+
+if [ ! -d "conductor/tracks/$TRACK_NAME" ]; then
+  echo "Track '$TRACK_NAME' does not exist. Available tracks:"
+  ls conductor/tracks/ 2>/dev/null || echo "No tracks found"
+  exit 1
+fi
+
+# Check if git is available and initialized
+if ! command -v git &> /dev/null || [ ! -d ".git" ]; then
+  echo "Warning: Git not found or not initialized in this directory. Reverting changes may require manual steps."
+  echo "Consider initializing git with 'git init' and committing your work regularly."
+else
+  echo "Git repository detected. Checking for commits related to track: $TRACK_NAME"
+  
+  # Look for commits that mention the track name
+  TRACK_COMMITS=$(git log --oneline --grep="$TRACK_NAME" 2>/dev/null || echo "")
+  
+  if [ -n "$TRACK_COMMITS" ]; then
+    echo "Found commits related to track '$TRACK_NAME':"
+    echo "$TRACK_COMMITS"
+    echo ""
+    echo "To revert these changes, you can use one of the following approaches:"
+    echo "1. Soft reset: git reset --soft <commit-hash-before-track> (keeps changes in staging area)"
+    echo "2. Mixed reset: git reset --mixed <commit-hash-before-track> (keeps changes in working directory)"
+    echo "3. Hard reset: git reset --hard <commit-hash-before-track> (discards all changes - USE WITH CAUTION)"
+    echo "4. Revert specific commits: git revert <commit-hash> (creates new commits that undo changes)"
+    echo ""
+    echo "Before proceeding, make sure to backup any important work!"
+  else
+    echo "No commits found that specifically mention track '$TRACK_NAME'."
+    echo "You may need to identify the relevant commits manually."
+  fi
+fi
+
+# Update metadata to indicate revert action
+cat > "conductor/tracks/$TRACK_NAME/metadata.json" << EOF
+{
+  "name": "$TRACK_NAME",
+  "status": "reverted",
+  "created": "$(stat -f %SB -t %Y-%m-%dT%H:%M:%SZ "conductor/tracks/$TRACK_NAME/spec.md" 2>/dev/null || date -u +%Y-%m-%dT%H:%M:%SZ)",
+  "updated": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+  "reverted": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+}
+EOF
+
+echo ""
+echo "Track '$TRACK_NAME' marked as reverted in metadata."
+echo "Note: Actual code changes require manual git operations as described above."
+'''

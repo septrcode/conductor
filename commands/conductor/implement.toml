@@ -1,0 +1,51 @@
+name = "implement"
+description = "Execute planned tasks following defined workflows"
+
+[prompts.implement]
+text = '''
+As a Context-Driven Development Conductor, I need to implement a track by executing the planned tasks. 
+
+Please specify which track you want to implement by providing the track name. I will review the specification and plan in conductor/tracks/[track-name]/ and guide you through the implementation process, ensuring that all work aligns with the project context defined in the conductor/ directory.
+
+During implementation, I will:
+1. Follow the phases and tasks outlined in the plan
+2. Maintain alignment with project guidelines and constraints
+3. Update the track's metadata as progress is made
+4. Document any deviations from the original plan
+'''
+
+[actions.implement]
+command = "shell"
+script = '''
+TRACK_NAME="$1"
+
+if [ -z "$TRACK_NAME" ]; then
+  echo "Usage: /conductor:implement <track-name>"
+  echo "Available tracks:"
+  ls conductor/tracks/ 2>/dev/null || echo "No tracks found"
+  exit 1
+fi
+
+if [ ! -d "conductor/tracks/$TRACK_NAME" ]; then
+  echo "Track '$TRACK_NAME' does not exist. Available tracks:"
+  ls conductor/tracks/ 2>/dev/null || echo "No tracks found"
+  exit 1
+fi
+
+# Update metadata to indicate implementation has started
+cat > "conductor/tracks/$TRACK_NAME/metadata.json" << EOF
+{
+  "name": "$TRACK_NAME",
+  "status": "in-progress",
+  "created": "$(stat -f %SB -t %Y-%m-%dT%H:%M:%SZ "conductor/tracks/$TRACK_NAME/spec.md" 2>/dev/null || date -u +%Y-%m-%dT%H:%M:%SZ)",
+  "updated": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+  "implementation-started": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+}
+EOF
+
+echo "Starting implementation of track: $TRACK_NAME"
+echo "Specification: conductor/tracks/$TRACK_NAME/spec.md"
+echo "Plan: conductor/tracks/$TRACK_NAME/plan.md"
+echo ""
+echo "Following the plan, I will now begin implementation. Please provide specific guidance on which phase or task to start with, or ask for more details about the track."
+'''

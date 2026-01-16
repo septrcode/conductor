@@ -1,0 +1,64 @@
+name = "status"
+description = "Get status overview of current tracks and progress"
+
+[prompts.status]
+text = '''
+As a Context-Driven Development Conductor, I need to provide a status overview of the project. 
+
+I will analyze the project context in the conductor/ directory and the status of all tracks in conductor/tracks/. This will include:
+
+1. Overall project status
+2. Status of each track (planned, in-progress, completed)
+3. Progress toward project goals
+4. Any blockers or concerns
+
+Generating this status report to help maintain visibility into the project's progress and health.
+'''
+
+[actions.status]
+command = "shell"
+script = '''
+echo "# Project Status Report"
+echo ""
+echo "## Project Context"
+if [ -f "conductor/product.md" ]; then
+  echo "Product definition: OK"
+else
+  echo "Product definition: Missing"
+fi
+
+if [ -f "conductor/guidelines.md" ]; then
+  echo "Development guidelines: OK"
+else
+  echo "Development guidelines: Missing"
+fi
+
+if [ -f "conductor/techstack.md" ]; then
+  echo "Technology stack: OK"
+else
+  echo "Technology stack: Missing"
+fi
+
+echo ""
+echo "## Track Status"
+
+if [ -d "conductor/tracks" ] && [ -n "$(ls -A conductor/tracks 2>/dev/null)" ]; then
+  for track_dir in conductor/tracks/*/; do
+    if [ -d "$track_dir" ]; then
+      track_name=$(basename "$track_dir")
+      if [ -f "$track_dir/metadata.json" ]; then
+        status=$(grep -o '"status": *"[^"]*"' "$track_dir/metadata.json" | cut -d'"' -f4)
+        echo "- $track_name: $status"
+      else
+        echo "- $track_name: status unknown"
+      fi
+    fi
+  done
+else
+  echo "No tracks found"
+fi
+
+echo ""
+echo "## Next Steps"
+echo "Run /conductor:newTrack to create a new track, or /conductor:implement to work on an existing track."
+'''

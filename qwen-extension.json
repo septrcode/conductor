@@ -1,0 +1,35 @@
+{
+  "name": "conductor",
+  "version": "1.0.0",
+  "description": "Context-Driven Development for Qwen Code - A structured approach to software development that treats context as a managed artifact",
+  "author": "Qwen Community",
+  "repository": "https://github.com/qwen-community/conductor",
+  "license": "MIT",
+  "commands": [
+    {
+      "name": "setup",
+      "description": "Initialize project context with foundational documents",
+      "file": "./commands/conductor/setup.toml"
+    },
+    {
+      "name": "newTrack",
+      "description": "Create a new track (high-level unit of work) with specification and plan",
+      "file": "./commands/conductor/newTrack.toml"
+    },
+    {
+      "name": "implement",
+      "description": "Execute planned tasks following defined workflows",
+      "file": "./commands/conductor/implement.toml"
+    },
+    {
+      "name": "status",
+      "description": "Get status overview of current tracks and progress",
+      "file": "./commands/conductor/status.toml"
+    },
+    {
+      "name": "revert",
+      "description": "Revert changes for a logical work unit",
+      "file": "./commands/conductor/revert.toml"
+    }
+  ]
+}

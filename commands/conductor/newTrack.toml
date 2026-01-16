@@ -1,0 +1,75 @@
+name = "newTrack"
+description = "Create a new track (high-level unit of work) with specification and plan"
+
+[prompts.newTrack]
+text = '''
+As a Context-Driven Development Conductor, I need to create a new track for the project. A track represents a high-level unit of work that includes:
+
+1. A detailed specification (spec.md) outlining what needs to be built
+2. An actionable plan (plan.md) with phases and tasks
+3. Metadata tracking information
+
+Ask for the track name and a brief description of what this track aims to accomplish. Then create these documents in the conductor/tracks/[track-name]/ directory, using the project context from the conductor/ directory to ensure alignment with overall project goals, guidelines, and technical constraints.
+'''
+
+[actions.newTrack]
+command = "shell"
+script = '''
+TRACK_NAME="${1:-$(echo "$PROMPT_INPUT" | head -n1 | tr -d '\\n' | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/--*/-/g' | sed 's/^-*//;s/-$//')}"
+
+if [ -z "$TRACK_NAME" ]; then
+  echo "Please provide a track name."
+  exit 1
+fi
+
+mkdir -p "conductor/tracks/$TRACK_NAME"
+
+cat > "conductor/tracks/$TRACK_NAME/spec.md" << 'EOF'
+# Track Specification: [Track Name]
+
+## Overview
+[Brief description of what this track accomplishes]
+
+## Requirements
+[Detailed requirements for this track]
+
+## Success Criteria
+[How to determine if this track is successfully completed]
+
+## Dependencies
+[Any dependencies this track has on other tracks or external factors]
+
+## Constraints
+[Any specific constraints for this track]
+EOF
+
+cat > "conductor/tracks/$TRACK_NAME/plan.md" << 'EOF'
+# Implementation Plan: [Track Name]
+
+## Phases
+### Phase 1: [Phase Name]
+- [Task 1]
+- [Task 2]
+
+### Phase 2: [Phase Name]
+- [Task 1]
+- [Task 2]
+
+## Timeline
+[Estimated timeline for completion]
+
+## Resources Needed
+[Resources required to complete this track]
+EOF
+
+cat > "conductor/tracks/$TRACK_NAME/metadata.json" << EOF
+{
+  "name": "$TRACK_NAME",
+  "status": "planned",
+  "created": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+  "updated": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+}
+EOF
+
+echo "New track '$TRACK_NAME' created in conductor/tracks/$TRACK_NAME/"
+'''

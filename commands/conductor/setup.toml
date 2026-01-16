@@ -1,0 +1,81 @@
+name = "setup"
+description = "Initialize project context with foundational documents"
+
+[prompts.setup]
+text = '''
+As a Context-Driven Development Conductor, I need to establish the foundational context for a new project. Create the following documents in the conductor/ directory:
+
+1. product.md - Define the product's purpose, target audience, and success metrics
+2. guidelines.md - Establish development guidelines and constraints
+3. techstack.md - Specify the technology stack and tools
+4. workflow.md - Document the development workflow and processes
+5. codestyle.md - Define coding standards and style guides
+
+For each document, create a comprehensive template that captures all necessary context for the project. Ask for any specific information about the project if needed to customize these documents appropriately.
+'''
+
+[actions.setup]
+command = "shell"
+script = '''
+mkdir -p conductor
+cat > conductor/product.md << 'EOF'
+# Product Definition
+
+## Purpose
+[Define the primary purpose of the product]
+
+## Target Audience
+[Describe the intended users of the product]
+
+## Success Metrics
+[Specify how success will be measured]
+EOF
+
+cat > conductor/guidelines.md << 'EOF'
+# Development Guidelines
+
+## Constraints
+[List any technical or business constraints]
+
+## Best Practices
+[Outline recommended development practices]
+EOF
+
+cat > conductor/techstack.md << 'EOF'
+# Technology Stack
+
+## Frontend
+[Specify frontend technologies]
+
+## Backend
+[Specify backend technologies]
+
+## Database
+[Specify database technologies]
+
+## DevOps
+[Specify deployment and infrastructure tools]
+EOF
+
+cat > conductor/workflow.md << 'EOF'
+# Development Workflow
+
+## Process
+[Describe the development process]
+
+## Tools
+[Specify tools used in the workflow]
+EOF
+
+cat > conductor/codestyle.md << 'EOF'
+# Code Style Guide
+
+## Standards
+[Define coding standards]
+
+## Linting
+[Specify linting tools and rules]
+EOF
+
+echo "Project context initialized in conductor/ directory."
+'''
