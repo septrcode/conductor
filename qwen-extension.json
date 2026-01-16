@@ -5,6 +5,7 @@
   "author": "Qwen Community",
   "repository": "https://github.com/qwen-community/conductor",
   "license": "MIT",
+  "contextFileName": "QWEN.md",
   "commands": [
     {
       "name": "setup",

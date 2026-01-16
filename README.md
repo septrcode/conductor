@@ -51,6 +51,10 @@ The Conductor extension supports multiple concurrent sessions working on differe
 3. **Conflict Prevention**: Sessions operate on distinct track directories
 4. **Progress Tracking**: Each track's progress is recorded independently
 
+## Context Management
+
+The extension uses `QWEN.md` as its context file, which provides persistent context to guide the AI assistant's behavior during interactions. This context includes file resolution protocols and multi-session coordination instructions.
+
 ## Usage
 
 ### 1. Project Setup
