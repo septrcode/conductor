@@ -1,0 +1,36 @@
+{
+  "name": "conductor",
+  "version": "1.0.0",
+  "description": "Context-Driven Development for Codex - A structured approach to software development that treats context as a managed artifact",
+  "author": "septrcode",
+  "repository": "https://github.com/septrcode/conductor",
+  "license": "MIT",
+  "contextFileName": "CODEX.md",
+  "commands": [
+    {
+      "name": "setup",
+      "description": "Scaffold the project and set up the Conductor environment",
+      "file": "./commands/conductor/setup.toml"
+    },
+    {
+      "name": "newTrack",
+      "description": "Start a new feature or bug track",
+      "file": "./commands/conductor/newTrack.toml"
+    },
+    {
+      "name": "implement",
+      "description": "Execute the tasks defined in the current track's plan",
+      "file": "./commands/conductor/implement.toml"
+    },
+    {
+      "name": "status",
+      "description": "Display the current progress of the tracks file and active tracks",
+      "file": "./commands/conductor/status.toml"
+    },
+    {
+      "name": "revert",
+      "description": "Revert a track, phase, or task by analyzing git history",
+      "file": "./commands/conductor/revert.toml"
+    }
+  ]
+}
