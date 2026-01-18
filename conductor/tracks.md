@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Multi-Agent Compatibility Layer Research and Prototype**
+- [~] **Track: Multi-Agent Compatibility Layer Research and Prototype**
   *Link: [./tracks/compatibility_layer_20260117/](./tracks/compatibility_layer_20260117/)*
