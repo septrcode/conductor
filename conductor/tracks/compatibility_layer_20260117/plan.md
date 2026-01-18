@@ -6,7 +6,7 @@
 - [x] Task: Analyze "Cursor" or provided repos for extension/plugin architecture patterns. 17a8fe5
 - [x] Task: Compare Gemini/Qwen existing implementations to identify commonalities and divergences. 17a8fe5
 - [x] Task: Draft "Universal Agent Interface" specification document. 4e8438a
-- [ ] Task: Conductor - User Manual Verification 'Research and Analysis' (Protocol in workflow.md)
+- [~] Task: Conductor - User Manual Verification 'Research and Analysis' (Protocol in workflow.md)
 
 ## Phase 2: Architecture Design
 - [ ] Task: Design the `Core` vs `Adapter` directory structure.
