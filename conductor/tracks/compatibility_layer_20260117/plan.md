@@ -17,7 +17,7 @@
 
 ## Phase 3: Prototyping
 - [x] Task: Create a new `core/` module to hold agent-agnostic logic. 58338c4
-- [ ] Task: Refactor existing `setup` command logic into the `core/` module.
+- [x] Task: Refactor existing `setup` command logic into the `core/` module. 3b1a06f
 - [ ] Task: Implement a `GeminiAdapter` that maps the core logic to the Gemini CLI API.
 - [ ] Task: Implement a `GenericAdapter` (or specific new target) to prove extensibility.
 - [ ] Task: Verify the prototype works with the existing test suite (or new mock tests).
