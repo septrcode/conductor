@@ -19,7 +19,7 @@
 - [x] Task: Create a new `core/` module to hold agent-agnostic logic. 58338c4
 - [x] Task: Refactor existing `setup` command logic into the `core/` module. 3b1a06f
 - [x] Task: Implement a `GeminiAdapter` that maps the core logic to the Gemini CLI API. a0702cd
-- [ ] Task: Implement a `GenericAdapter` (or specific new target) to prove extensibility.
+- [x] Task: Implement a `GenericAdapter` (or specific new target) to prove extensibility. 5ae0b9b
 - [ ] Task: Verify the prototype works with the existing test suite (or new mock tests).
 - [ ] Task: Conductor - User Manual Verification 'Prototyping' (Protocol in workflow.md)
 
