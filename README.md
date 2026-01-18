@@ -12,11 +12,35 @@ Conductor is a Qwen Code extension that implements Context-Driven Development - 
 
 ## Installation
 
+### Gemini CLI & Qwen Code
 To install the Conductor extension:
 
 ```bash
 qwen extensions install https://github.com/septrcode/conductor.git
+# OR
+gemini extensions install https://github.com/septrcode/conductor.git
 ```
+
+### OpenAI Codex CLI
+The Codex CLI supports Conductor via its native `prompts` system.
+
+1.  **Install Prompts:**
+    ```bash
+    mkdir -p ~/.codex/prompts
+    # Link the prompts from the repo to your Codex configuration
+    ln -s $(pwd)/prompts/*.md ~/.codex/prompts/
+    ```
+
+2.  **Usage:**
+    Start a `codex` session and use the commands directly:
+    ```bash
+    codex
+    # Inside the session:
+    /prompts:conductor-setup
+    /prompts:conductor-newTrack
+    /prompts:conductor-implement
+    ```
+
 
 ## Commands
 
