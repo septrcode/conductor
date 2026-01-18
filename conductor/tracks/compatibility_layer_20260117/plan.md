@@ -9,7 +9,7 @@
 - [x] Task: Conductor - User Manual Verification 'Research and Analysis' (Protocol in workflow.md) 3bea41d
 
 ## Phase 2: Architecture Design
-- [ ] Task: Design the `Core` vs `Adapter` directory structure.
+- [x] Task: Design the `Core` vs `Adapter` directory structure. 3c2305d
 - [ ] Task: Define the `AgentContext` interface (how to read/write files, get cwd, etc. in a generic way).
 - [ ] Task: Define the `CommandRegistry` interface (how to register /conductor commands generically).
 - [ ] Task: Create a Proof-of-Concept (POC) architecture diagram.
