@@ -1,0 +1,79 @@
+#!/bin/bash
+
+# Conductor CLI Wrapper for Codex
+# Usage: ./bin/conductor <command> [args]
+
+COMMAND=$1
+SHIFTED_ARGS="${@:2}"
+
+# Helper: Print Usage
+if [ -z "$COMMAND" ]; then
+  echo "Usage: conductor <command> [args]"
+  echo "Commands:"
+  echo "  setup       - Initialize the project"
+  echo "  newTrack    - Create a new work track"
+  echo "  implement   - Start working on a track"
+  echo "  status      - Check project status"
+  echo "  revert      - Revert changes"
+  exit 1
+fi
+
+# 1. Resolve Command File
+# Assumes the script is run from the project root or we need to resolve the path.
+# We'll try to resolve relative to the script location first.
+SCRIPT_DIR=$(dirname "$0")
+PROJECT_ROOT=$(cd "$SCRIPT_DIR/.." && pwd)
+COMMAND_FILE="$PROJECT_ROOT/commands/conductor/${COMMAND}.toml"
+
+if [ ! -f "$COMMAND_FILE" ]; then
+  echo "Error: Command definition '$COMMAND_FILE' not found."
+  exit 1
+fi
+
+# 2. Extract Prompt from TOML
+# We use python for reliable extraction of the multi-line string.
+PROMPT_CONTENT=$(python3 -c "
+import toml
+import sys
+
+try:
+    data = toml.load('$COMMAND_FILE')
+    print(data.get('prompt', ''))
+except Exception as e:
+    # Fallback if toml lib not installed, though uncommon in AI dev environments
+    # We'll print a marker to fail gracefully in bash
+    print('__FAIL__')
+")
+
+if [ "$PROMPT_CONTENT" == "__FAIL__" ]; then
+    # Fallback to sed extraction if python/toml fails
+    PROMPT_CONTENT=$(sed -n '/prompt = """/,/"""/p' "$COMMAND_FILE" | sed '1d;$d')
+fi
+
+# 3. Load Context
+CONTEXT_FILE="$PROJECT_ROOT/CODEX.md"
+if [ -f "$CONTEXT_FILE" ]; then
+    CONTEXT_CONTENT=$(cat "$CONTEXT_FILE")
+else
+    CONTEXT_CONTENT="No CODEX.md context found."
+fi
+
+# 4. Construct Final Prompt
+FINAL_PROMPT="
+<SYSTEM_CONTEXT>
+$CONTEXT_CONTENT
+</SYSTEM_CONTEXT>
+
+<COMMAND_INSTRUCTION>
+$PROMPT_CONTENT
+</COMMAND_INSTRUCTION>
+
+<USER_ARGS>
+$SHIFTED_ARGS
+</USER_ARGS>
+"
+
+# 5. Execute Codex
+# We print the command for transparency
+echo "Drafting prompt for '$COMMAND'..."
+codex "$FINAL_PROMPT"
