@@ -12,7 +12,7 @@
 - [x] Task: Design the `Core` vs `Adapter` directory structure. 3c2305d
 - [x] Task: Define the `AgentContext` interface (how to read/write files, get cwd, etc. in a generic way). a952b70
 - [x] Task: Define the `CommandRegistry` interface (how to register /conductor commands generically). a952b70
-- [ ] Task: Create a Proof-of-Concept (POC) architecture diagram.
+- [x] Task: Create a Proof-of-Concept (POC) architecture diagram. 7d7313e
 - [ ] Task: Conductor - User Manual Verification 'Architecture Design' (Protocol in workflow.md)
 
 ## Phase 3: Prototyping
